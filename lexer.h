@@ -32,7 +32,8 @@ enum Q {
 	INPUT_PERCENT, 
 	INPUT_DIGIT,
 	INPUT_EOF,
-	INPUT_SPACE
+	INPUT_SPACE,
+	INPUT_NEWLINE
 };
 
 typedef enum lexer_state {
@@ -47,7 +48,7 @@ typedef enum lexer_state {
 } LexerState;
 	
 #define NSTATES 9
-#define NINPUT 11
+#define NINPUT 12
 
 #define ISFINALSTATE(x) ((x == STATE_B ||\
 			  x == STATE_A) ? false : true)
@@ -59,8 +60,8 @@ static const int delta[NSTATES][NINPUT] = {
 	[STATE_RPAREN] = { STATE_PHI },
 	[STATE_OP]  = { STATE_PHI },
 	[STATE_NUM] = { STATE_PHI, STATE_PHI,    STATE_PHI,    STATE_PHI, STATE_PHI, STATE_PHI, STATE_PHI, STATE_PHI, STATE_NUM, STATE_PHI, STATE_PHI },
-	[STATE_A] =   { STATE_PHI, STATE_LPAREN, STATE_RPAREN, STATE_OP,  STATE_B,   STATE_B,   STATE_OP,  STATE_OP,  STATE_NUM, STATE_EOF, STATE_A },
-	[STATE_B] =   { STATE_PHI, STATE_PHI,    STATE_PHI,    STATE_PHI, STATE_PHI, STATE_PHI, STATE_PHI, STATE_PHI, STATE_NUM, STATE_EOF, STATE_OP },
+	[STATE_A] =   { STATE_PHI, STATE_LPAREN, STATE_RPAREN, STATE_OP,  STATE_B,   STATE_B,   STATE_OP,  STATE_OP,  STATE_NUM, STATE_EOF, STATE_A, STATE_A },
+	[STATE_B] =   { STATE_PHI, STATE_PHI,    STATE_PHI,    STATE_PHI, STATE_PHI, STATE_PHI, STATE_PHI, STATE_PHI, STATE_NUM, STATE_EOF, STATE_OP, STATE_PHI },
 	[STATE_EOF] = {0},
 };
 
@@ -84,7 +85,10 @@ static inline char tolang(char c) {
 	case EOF:
 		return INPUT_EOF;
 	case ' ':
+	case '\t':
 		return INPUT_SPACE;
+	case '\n':
+		return INPUT_NEWLINE;
 	default:
 		return INPUT_INVALID;
 	}

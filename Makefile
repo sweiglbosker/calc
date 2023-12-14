@@ -1,5 +1,6 @@
 TARGET=calc
 SRC=main.c lexer.c reader.c
+TEST:=./test.txt
 
 ${TARGET}: ${SRC}
 	${CC} -o $@ $^ 
@@ -7,5 +8,9 @@ ${TARGET}: ${SRC}
 clean:
 	rm -rf ${TARGET}
 
-.PHONY=clean
+test: ${TEST} ${TARGET}
+	./${TARGET} ${TEST}
+
+
+.PHONY=clean test
 

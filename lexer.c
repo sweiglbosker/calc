@@ -8,6 +8,8 @@ Lexer *NewLexer(Reader *r) {
 	Lexer *l = calloc(1, sizeof(Lexer));
 	l->r = r;
 	l->state = STATE_A;
+	l->pos.line=1;
+	l->pos.col=1;
 	
 	return l;
 }
@@ -18,9 +20,6 @@ Token lexer_advance(Lexer *l) {
 
 	while (true) {
 		int c = reader_peek(l->r);
-		printf("INPUT = ");
-		putchar(c);
-		putchar('\n');
 
 		enum Q input = tolang(c);
 		
@@ -31,14 +30,19 @@ Token lexer_advance(Lexer *l) {
 			if (ISFINALSTATE(l->state))
 				break;
 			else {
-				printf("unable to identify token. state = %d, input = %d, i = %d\n", l->state, input, l->pos.i);
+				printf("invalid token at (%d, %d). final lexer state = %d\n", l->pos.line, l->pos.col, l->state);
 				t.kind = TOKEN_ERR;
 				t.val.err = 1;
 				break;
 			}
 		} 
 		c = reader_next(l->r);
+		if (input == INPUT_NEWLINE) {
+			l->pos.col = 1;
+			l->pos.line++;
+		}
 		l->pos.i++;
+		l->pos.col++;
 		l->state = nextstate;
 	}
 
@@ -47,7 +51,7 @@ Token lexer_advance(Lexer *l) {
 			t.kind = TOKEN_LPAREN; 
 			break;
 		case (STATE_RPAREN):
-			t.kind = TOKEN_LPAREN; 
+			t.kind = TOKEN_RPAREN; 
 			break;
 		case (STATE_NUM):
 			t.kind = TOKEN_NUMBER;
