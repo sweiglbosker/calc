@@ -42,7 +42,7 @@ Token lexer_advance(Lexer *l) {
 			break;
 		}	
 
-		//	printf("got input %d, so we transition from state %d state %d\n", input, l->state, nextstate);
+		printf("got input %d, so we transition from state %d state %d\n", input, l->state, nextstate);
 
 		if (nextstate == STATE_PHI) {
 			if (ISFINALSTATE(l->state))
@@ -53,7 +53,6 @@ Token lexer_advance(Lexer *l) {
 					t.kind = TOKEN_ERR;
 					t.val.err = 1;
 					break;
-				}
 			}
 		} 
 		c = reader_next(l->r);
