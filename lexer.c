@@ -29,8 +29,6 @@ Token lexer_advance(Lexer *l) {
 		enum lexer_state nextstate = delta[l->state][input];
 
 		switch (nextstate) {
-		case (STATE_OP):
-			t.val.op = c;
 		case (STATE_B):
 		case (STATE_NUM):
 			if (token_index > 11) {
@@ -38,6 +36,10 @@ Token lexer_advance(Lexer *l) {
 			} else {
 				buf[token_index++] = c;
 			}
+			break;
+		case (STATE_OP):
+			t.val.op = (l->state == STATE_B) ?\
+					buf[0] : c;
 		default:
 			break;
 		}	
