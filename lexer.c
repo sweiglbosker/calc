@@ -68,7 +68,7 @@ Token lexer_advance(Lexer *l) {
 		l->state = nextstate;
 	}
 
-	switch(l->state) {
+	switch (l->state) {
 		case (STATE_LPAREN):
 			t.kind = TOKEN_LPAREN; 
 			break;
@@ -83,7 +83,23 @@ Token lexer_advance(Lexer *l) {
 			t.kind = TOKEN_EOF;
 			break;
 		case (STATE_OP):
-			t.kind = TOKEN_OPERATOR;
+			switch (t.val.op) {
+			case '+':
+				t.kind = TOKEN_PLUS;
+				break;
+			case '-':
+				t.kind = TOKEN_MINUS;
+				break;
+			case '/':
+				t.kind = TOKEN_SLASH;
+				break;
+			case '*':
+				t.kind = TOKEN_ASTERIX;
+				break;
+			case '%':
+				t.kind = TOKEN_PERCENT;
+				break;
+			}
 			break;
 		default:
 			printf("idk what happend... final state: %d\n", l->state);

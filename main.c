@@ -19,10 +19,9 @@ int main(int argc, char *argv[]) {
 	while (true) {
 		Token t = lexer_advance(l);
 		printf("found token of type %s", TOKEN_NAME[t.kind]);
-		if (t.kind == TOKEN_NUMBER) { 
+
+		if (t.kind == TOKEN_NUMBER) 
 			printf(" and value %d\n", (int)t.val.number);
-		} else if (t.kind == TOKEN_OPERATOR) 
-			printf(" and value %d\n", t.val.op);
 		else 
 			putchar('\n');
 	
