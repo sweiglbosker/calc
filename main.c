@@ -4,6 +4,7 @@
 
 #include "reader.h"
 #include "lexer.h"
+#include "parser.h"
 
 int main(int argc, char *argv[]) {
 
@@ -15,17 +16,11 @@ int main(int argc, char *argv[]) {
 	Reader *r = new_reader(READER_FILE, &argv[1]);
 
 	Lexer *l = NewLexer(r);
-	
-	while (true) {
-		Token t = lexer_advance(l);
-		printf("found token of type %s", TOKEN_NAME[t.kind]);
+	TokenList *tokens = Scan(l);
+	T *parsetree = Parse(tokens);
 
-		if (t.kind == TOKEN_NUMBER) 
-			printf(" and value %d\n", (int)t.val.number);
-		else 
-			putchar('\n');
-	
-		if (t.kind == TOKEN_EOF || t.kind == TOKEN_ERR) 
-			break;
-	}
+//	while (p->next != NULL) {
+//		printf("found token of type %s\n", TOKEN_NAME[p->token.kind]);
+//		p = p->next;
+//	}
 }

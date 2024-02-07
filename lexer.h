@@ -111,6 +111,11 @@ typedef struct {
 	} val;
 } Token;
 
+typedef struct TokenList {
+	Token token;
+	struct TokenList *next;
+} TokenList;
+
 typedef struct {
 	enum lexer_state state;
 	Reader *r;
@@ -122,7 +127,7 @@ typedef struct {
 
 Lexer *NewLexer(Reader *r);
 
-Token peek(Lexer *l);
+TokenList *Scan(Lexer *l);
 Token lexer_advance(Lexer *l);
 
 #endif /* _LEXER_H */

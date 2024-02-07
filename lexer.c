@@ -108,3 +108,20 @@ Token lexer_advance(Lexer *l) {
 
 	return t;
 }
+
+TokenList *Scan(Lexer *l) {
+	TokenList *list = calloc(1, sizeof(TokenList));
+	TokenList *tail = list;
+	while (true) {
+		tail->token = lexer_advance(l);
+
+		if (tail->token.kind == TOKEN_EOF || tail->token.kind == TOKEN_ERR) 
+				break;
+
+		tail->next = calloc(1, sizeof(TokenList));
+		tail = tail->next;
+	}
+
+	return list;
+}
+
