@@ -103,7 +103,7 @@ static inline char tolang(char c) {
 }
 
 typedef struct {
-	unsigned short kind;
+	int kind;
 	union {
 		long number;
 		char op;
