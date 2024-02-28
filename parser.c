@@ -12,9 +12,14 @@ ParseTree *NewTree(Rule r) {
 static void AppendChild(ParseTree *parent, ParseTree *child) {
 	ParseTree *p = parent->child;
 
-	do {
+	if (!p) {
+		parent->child = child;
+		return;
+	}
+
+	while (p->neighbor) {
 		p = p->neighbor;
-	} while (p->neighbor);
+	}
 
 	p->neighbor = child;
 }
