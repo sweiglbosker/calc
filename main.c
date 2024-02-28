@@ -17,7 +17,8 @@ int main(int argc, char *argv[]) {
 
 	Lexer *l = NewLexer(r);
 	TokenList *tokens = Scan(l);
-	T *parsetree = Parse(tokens);
+	
+	ParseTree *parsetree = ParseE(&tokens);
 
 //	while (p->next != NULL) {
 //		printf("found token of type %s\n", TOKEN_NAME[p->token.kind]);
