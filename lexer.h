@@ -16,18 +16,8 @@ enum {
 	TOKEN_EOF 
 };
 
-static const char *TOKEN_NAME[] = {
-	[TOKEN_NUMBER] = "TOKEN_NUMBER",
-	[TOKEN_LPAREN] = "TOKEN_LPAREN",
-	[TOKEN_RPAREN] = "TOKEN_RPAREN",
-	[TOKEN_PLUS] = "TOKEN_PLUS",
-	[TOKEN_MINUS] = "TOKEN_MINUS",
-	[TOKEN_ASTERIX] = "TOKEN_ASTERIX",
-	[TOKEN_SLASH] = "TOKEN_SLASH",
-	[TOKEN_PERCENT] = "TOKEN_PERCENT",
-	[TOKEN_ERR] = "TOKEN_ERR",
-	[TOKEN_EOF] = "TOKEN_EOF",
-};
+
+extern const char *TOKEN_NAME[];
 
 enum Q { 
 	INPUT_INVALID,
@@ -60,18 +50,6 @@ typedef enum lexer_state {
 
 #define ISFINALSTATE(x) ((x == STATE_B ||\
 			  x == STATE_A) ? false : true)
-
-static const int delta[NSTATES][NINPUT] = {
-	/* state        INVALID    (	         ) 	       *	  +	     -	        /	   %	      digit      eof        space	*/	
-	[STATE_PHI] = { STATE_PHI },
-	[STATE_LPAREN] = { STATE_PHI },
-	[STATE_RPAREN] = { STATE_PHI },
-	[STATE_OP]  = { STATE_PHI },
-	[STATE_NUM] = { STATE_PHI, STATE_PHI,    STATE_PHI,    STATE_PHI, STATE_PHI, STATE_PHI, STATE_PHI, STATE_PHI, STATE_NUM, STATE_PHI, STATE_PHI },
-	[STATE_A] =   { STATE_PHI, STATE_LPAREN, STATE_RPAREN, STATE_OP,  STATE_B,   STATE_B,   STATE_OP,  STATE_OP,  STATE_NUM, STATE_EOF, STATE_A, STATE_A },
-	[STATE_B] =   { STATE_PHI, STATE_PHI,    STATE_PHI,    STATE_PHI, STATE_PHI, STATE_PHI, STATE_PHI, STATE_PHI, STATE_NUM, STATE_EOF, STATE_OP, STATE_PHI },
-	[STATE_EOF] = {0},
-};
 
 static inline char tolang(char c) {
 	if (c >= 48 && c <= 57)
