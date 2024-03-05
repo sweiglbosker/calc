@@ -5,6 +5,7 @@
 #include "reader.h"
 #include "lexer.h"
 #include "parser.h"
+#include "backend.h"
 
 int main(int argc, char *argv[]) {
 
@@ -19,6 +20,7 @@ int main(int argc, char *argv[]) {
 	TokenList *tokens = Scan(l);
 	
 	ParseTree *parsetree = ParseE(&tokens);
+	PrintParseTree(parsetree);
 
 //	while (p->next != NULL) {
 //		printf("found token of type %s\n", TOKEN_NAME[p->token.kind]);

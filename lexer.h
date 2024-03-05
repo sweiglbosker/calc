@@ -126,8 +126,8 @@ typedef struct {
 } Lexer;
 
 Lexer *NewLexer(Reader *r);
-
 TokenList *Scan(Lexer *l);
 Token lexer_advance(Lexer *l);
+void PrintToken(Token *t);
 
 #endif /* _LEXER_H */

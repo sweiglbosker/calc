@@ -1,5 +1,5 @@
 TARGET=calc
-SRC=main.c lexer.c reader.c parser.c
+SRC=main.c lexer.c reader.c parser.c backend.c
 TEST:=./test.txt
 
 ${TARGET}: ${SRC}

@@ -125,3 +125,13 @@ TokenList *Scan(Lexer *l) {
 	return list;
 }
 
+void PrintToken(Token *t) {
+	if (!t || t->kind > TOKEN_EOF)
+		return;
+	
+	printf("kind: %s\n", TOKEN_NAME[t->kind]);
+	if (t->kind == TOKEN_NUMBER)
+		printf("val: %li\n", t->val.number);	
+	
+	return;
+}

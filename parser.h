@@ -10,6 +10,13 @@ typedef enum {
 	RULE_E3
 } Rule; 
 
+static const char *RULENAME[] = {
+	[RULE_TERMINAL] = "TERMINAL",
+	[RULE_E] = "E",
+	[RULE_E2] = "E2",
+	[RULE_E3] = "E3",
+};
+
 // Parse Tree
 typedef struct ParseTree {
 	Rule r;	/* grammar used to contruct tree */ 
