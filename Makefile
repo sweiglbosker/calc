@@ -17,5 +17,7 @@ clean:
 test: ${TEST} ${TARGET}
 	gdb --args ./${TARGET} ${TEST} 
 
+lint:
+	clang-tidy --warnings-as-errors='*' --quiet *.c *.h
 
-.PHONY=clean test
+.PHONY=clean test lint
