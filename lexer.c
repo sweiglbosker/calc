@@ -83,7 +83,7 @@ Token lexer_advance(Lexer *l) {
 				}
 			}
 		} 
-		c = reader_next(l->r);
+		reader_next(l->r);
 		if (input == INPUT_NEWLINE) {
 			l->pos.col = 1;
 			l->pos.line++;
