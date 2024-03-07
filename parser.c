@@ -42,15 +42,15 @@ ParseTree *ParseE(TokenList **t) {
 	ParseTree *tree = NewTree(RULE_E);
 	printf("parsing E\n");
 
-	printf("next token: %i\n", (*t)->next->token.kind);	
-	printf("TOKEN_MINUS: %i\n", TOKEN_MINUS);
+	puts("next token: \n");
+	PrintToken(&((*t)->next->token));
 	/* all production for e start with a nonterminal, so we pick by checking next token */
 	switch ((*t)->next->token.kind) {
 	case TOKEN_PLUS: 	/* e → e + e2 */
 	case TOKEN_MINUS:	/* e → e - e2 */
-		AppendChild(tree, ParseE(t));
-		AppendChild(tree, ParseTerminal(t));
 		AppendChild(tree, ParseE2(t));
+		AppendChild(tree, ParseTerminal(t));
+		AppendChild(tree, ParseE(t));
 		break;
 	default:	/* e → e2 */
 		AppendChild(tree, ParseE2(t));
@@ -64,13 +64,23 @@ ParseTree *ParseE2(TokenList **t) {
 	ParseTree *tree = NewTree(RULE_E2);
 	printf("parsing E2\n");
 
-	switch ((*t)->next->token.kind) {
+	puts("next token: \n");
+	PrintToken(&((*t)->next->token));
+
+	TokenList *next = (*t)->next;
+	
+	if (!next) {
+		if ((*t)->token.kind == TOKEN_NUMBER)
+			AppendChild(tree, ParseE3(t));
+			return tree
+		
+	} else if ((*t)->next->token.kind == TOKEN_ASTERIXA) {
 	case TOKEN_ASTERIX:	/* e2 → e2 * e3 */ 
 	case TOKEN_SLASH:	/* e2 → e2 / e3 */ 
 	case TOKEN_PERCENT:	/* e2 % e3 */ 
-		AppendChild(tree, ParseE2(t));
-		AppendChild(tree, ParseTerminal(t));
 		AppendChild(tree, ParseE3(t));
+		AppendChild(tree, ParseTerminal(t));
+		AppendChild(tree, ParseE2(t));
 		break;
 	default: 	/* e2 → e3 */ 
 		AppendChild(tree, ParseE3(t));
