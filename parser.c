@@ -25,14 +25,20 @@ static void AppendChild(ParseTree *parent, ParseTree *child) {
 }
 
 
-ParseTree *ParseTerminal(TokenList **t) {
+ParseTree *ParseTerminal(TokenList **ptl) {
+	ParseTree *tree = NewTree(RULE_TERMINAL);
+	TokenList *tl = *ptl;
+
 	printf("parsing terminal\n");
 //	if (desired && desired != (*t)->token.kind) 
 //		return NULL;
-	ParseTree *tree = NewTree(RULE_TERMINAL);
-	printf("parsed terminal: %s\n", TOKEN_NAME[(*t)->token.kind]);
-	tree->token = (*t)->token;
+	printf("parsed terminal: %s\n", TOKEN_NAME[tl->token.kind]);
+
+	tree->token.kind = tl->token.kind;
+	tree->token.val = tl->token.val;
 	
+	*ptl = tl->next;
+
 	return tree;
 }
 
@@ -42,51 +48,58 @@ ParseTree *ParseE(TokenList **t) {
 	ParseTree *tree = NewTree(RULE_E);
 	printf("parsing E\n");
 
-	puts("next token: \n");
-	PrintToken(&((*t)->next->token));
 	/* all production for e start with a nonterminal, so we pick by checking next token */
-	switch ((*t)->next->token.kind) {
-	case TOKEN_PLUS: 	/* e → e + e2 */
-	case TOKEN_MINUS:	/* e → e - e2 */
-		AppendChild(tree, ParseE2(t));
-		AppendChild(tree, ParseTerminal(t));
-		AppendChild(tree, ParseE(t));
-		break;
-	default:	/* e → e2 */
-		AppendChild(tree, ParseE2(t));
-		break;
-	}
+	AppendChild(tree, ParseE2(t));
+	AppendChild(tree, ParseER(t));
 
 	return tree;
 }
+
+ParseTree *ParseER(TokenList **t) {
+	ParseTree *tree = NewTree(RULE_ER);
+	printf("parsing E'\n");
+
+	switch ((*t)->token.kind) {
+	case TOKEN_PLUS:
+	case TOKEN_MINUS:
+		AppendChild(tree, ParseTerminal(t));
+		AppendChild(tree, ParseER(t));
+	default:
+		/* TODO: should we create special node for ε? */
+		return tree;
+	} 
+
+	return tree;
+}
+
 
 ParseTree *ParseE2(TokenList **t) {
 	ParseTree *tree = NewTree(RULE_E2);
 	printf("parsing E2\n");
 
-	puts("next token: \n");
-	PrintToken(&((*t)->next->token));
+	AppendChild(tree, ParseE3(t));
+	AppendChild(tree, ParseE2R(t));
 
-	TokenList *next = (*t)->next;
-	
-	if (!next) {
-		if ((*t)->token.kind == TOKEN_NUMBER)
-			AppendChild(tree, ParseE3(t));
-			return tree
-		
-	} else if ((*t)->next->token.kind == TOKEN_ASTERIXA) {
-	case TOKEN_ASTERIX:	/* e2 → e2 * e3 */ 
-	case TOKEN_SLASH:	/* e2 → e2 / e3 */ 
-	case TOKEN_PERCENT:	/* e2 % e3 */ 
-		AppendChild(tree, ParseE3(t));
+	return tree;
+}
+
+
+ParseTree *ParseE2R(TokenList **t) {
+	ParseTree *tree = NewTree(RULE_E2R);
+	printf("parsing E'\n");
+
+	switch ((*t)->token.kind) {
+	case TOKEN_ASTERIX:
+	case TOKEN_SLASH:
+	case TOKEN_PERCENT:
 		AppendChild(tree, ParseTerminal(t));
-		AppendChild(tree, ParseE2(t));
-		break;
-	default: 	/* e2 → e3 */ 
-		AppendChild(tree, ParseE3(t));
+		AppendChild(tree, ParseE2R(t));
+	default:
+		return tree;
 	}
 	return tree;
 }
+
 
 ParseTree *ParseE3(TokenList **t) {
 	ParseTree *tree = NewTree(RULE_E3);
@@ -100,6 +113,7 @@ ParseTree *ParseE3(TokenList **t) {
 		AppendChild(tree, ParseTerminal(t));
 		AppendChild(tree, ParseE(t));
 		AppendChild(tree, ParseTerminal(t)); // HACK. we only checked LPAREN
+		break;
 	}
 	return tree;
 }

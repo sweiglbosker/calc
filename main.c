@@ -20,6 +20,7 @@ int main(int argc, char *argv[]) {
 	TokenList *tokens = Scan(l);
 	
 	ParseTree *parsetree = ParseE(&tokens);
+
 	PrintParseTree(parsetree);
 
 //	while (p->next != NULL) {

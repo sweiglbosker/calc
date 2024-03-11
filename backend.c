@@ -9,13 +9,13 @@ void PrintParseTree(ParseTree *T) {
 	if (T->r == RULE_TERMINAL) {
 		PrintToken(&(T->token));
 	}
+
 	putchar('\n');
 
 	ParseTree *child = T->child;
 
-	while (child) {
+	for (ParseTree *child = T->child; child != NULL; child = child->neighbor) {
 		PrintParseTree(child);
-      		child = child->neighbor;
 	}
 
 	return;
