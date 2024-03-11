@@ -8,11 +8,9 @@ void PrintParseTree(ParseTree *T) {
 	printf("rule: %s\n", RULENAME[T->r]);
 	if (T->r == RULE_TERMINAL) {
 		PrintToken(&(T->token));
+		putchar('\n');
 	}
 
-	putchar('\n');
-
-	ParseTree *child = T->child;
 
 	for (ParseTree *child = T->child; child != NULL; child = child->neighbor) {
 		PrintParseTree(child);
