@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -29,6 +30,14 @@ Reader *new_reader(int type, void *arg) {
 		r->next = file_next;
 		r->isEOF = file_isEOF;
 	}
+
+	if (type == READER_STDIN) {
+		r->data.input.size = getline(&r->data.input.line, &r->data.input.n, stdin);
+
+		r->peek = stdin_peek;
+		r->next = stdin_next;
+		r->isEOF = stdin_isEOF;
+	}
 	return r;
 }
 
@@ -56,4 +65,25 @@ bool file_isEOF(Reader *r) {
 		ungetc(c, fp);
 		return false;
 	}
+}
+
+char stdin_next(Reader *r) {
+	if (r->data.input.pos >= r->data.input.size - 1)
+		return EOF;
+	else	
+		return r->data.input.line[r->data.input.pos++];
+}
+
+char stdin_peek(Reader *r) {
+	if (r->data.input.pos >= r->data.input.size - 1)
+		return EOF;
+	else	
+		return r->data.input.line[r->data.input.pos];
+}
+
+bool stdin_isEOF(Reader *r) {
+	if (r->data.input.pos >= r->data.input.size - 1)
+		return true;
+	else
+		return false;
 }
