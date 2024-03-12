@@ -63,6 +63,8 @@ long evalER(long a, ParseTree *t) {
 	case TOKEN_PLUS:
 		return evalER(a + evalE2(t->child->neighbor), t->child->neighbor->neighbor);
 	}
+	printf("error in evalER: unexpected token.\n");
+	return 0;
 }
 
 long evalE2R(long a, ParseTree *t) {
@@ -75,4 +77,6 @@ long evalE2R(long a, ParseTree *t) {
 	case TOKEN_PLUS:
 		return evalE2R(a + evalE3(t->child->neighbor), t->child->neighbor->neighbor);
 	}
+	printf("error in evalE2R: unexpected token.\n");
+	return 0;
 }
