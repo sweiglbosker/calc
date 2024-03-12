@@ -21,7 +21,9 @@ int main(int argc, char *argv[]) {
 	
 	ParseTree *parsetree = ParseE(&tokens);
 
-	PrintParseTree(parsetree);
+//	PrintParseTree(parsetree);
+	long result = evalE(parsetree);
+	printf("result: %li\n", result);
 
 //	while (p->next != NULL) {
 //		printf("found token of type %s\n", TOKEN_NAME[p->token.kind]);
