@@ -1,0 +1,18 @@
+name: CI
+
+on:
+  push:
+    branches: '*'
+  pull_request:
+    branches: '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - run: CFLAGS='-Werror -Wall -Wshadow -g -O2 -march=native -std=c11 -pipe' make --environment-overrides
+
+    - run: clang-tidy --warnings-as-errors='*' --quiet *.c *.h
