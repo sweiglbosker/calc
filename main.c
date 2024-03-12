@@ -18,12 +18,17 @@ int main(int argc, char *argv[]) {
 
 	Lexer *l = NewLexer(r);
 	TokenList *tokens = Scan(l);
-	
-	ParseTree *parsetree = ParseE(&tokens);
-	PrintParseTree(parsetree);
+	TokenList *p = tokens;
 
-//	while (p->next != NULL) {
-//		printf("found token of type %s\n", TOKEN_NAME[p->token.kind]);
-//		p = p->next;
-//	}
+	while (p->next != NULL) {
+		PrintToken(&p->token);
+		p = p->next;
+	}
+
+	ParseTree *parsetree = ParseE(&tokens);
+
+	PrintParseTree(parsetree);
+	long result = evalE(parsetree);
+	printf("result: %li\n", result);
+
 }

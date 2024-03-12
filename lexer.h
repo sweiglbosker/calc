@@ -66,6 +66,8 @@ static inline char tolang(char c) {
 		return INPUT_MINUS;
 	case '/':
 		return INPUT_SLASH;
+	case '*': 
+		return INPUT_ASTERIX;
 	case '%':
 		return INPUT_PERCENT;
 	case EOF:

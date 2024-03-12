@@ -5,14 +5,18 @@ precedence level from high to low
 
 everything is left associative so only left side of operator is recursive
 
-e = e + e2 |
-    e - e2 |
-    e2
+e = e2 e'
+    
+e' = + e2 e' | 
+     - e2 e' |
+     ε
 
-e2 =  e2 * e3 |
-      e2 / e3 |
-      e2 % e3 |
-      e3
+e2 = e3 e2'
+
+e2' = * e3 e2' |
+      / e3 e2' |
+      % e3 e2' |
+      ε
 
 e3 = num |
      (e)
