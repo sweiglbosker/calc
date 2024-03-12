@@ -18,12 +18,6 @@ int main(int argc, char *argv[]) {
 
 	Lexer *l = NewLexer(r);
 	TokenList *tokens = Scan(l);
-	TokenList *p = tokens;
-
-	while (p->next != NULL) {
-		PrintToken(&p->token);
-		p = p->next;
-	}
 
 	ParseTree *parsetree = ParseE(&tokens);
 
