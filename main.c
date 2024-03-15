@@ -18,6 +18,13 @@ void interactive() {
 		Lexer *l = NewLexer(r);
 
 		TokenList *tokens = Scan(l);
+
+		if (!tokens) {
+			lexer_free(l);
+			reader_free(r);
+			continue;
+		}
+
 		ParseTree *parsetree = ParseE(&tokens); 
 		long result = evalE(parsetree);
 

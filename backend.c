@@ -74,9 +74,12 @@ long evalE2R(long a, ParseTree *t) {
 	switch (t->child->token.kind) {
 	case TOKEN_ASTERIX:
 		return evalE2R(a * evalE3(t->child->neighbor), t->child->neighbor->neighbor);
-	case TOKEN_PLUS:
-		return evalE2R(a + evalE3(t->child->neighbor), t->child->neighbor->neighbor);
+	case TOKEN_SLASH:
+		return evalE2R(a / evalE3(t->child->neighbor), t->child->neighbor->neighbor);
+	case TOKEN_PERCENT:
+		return evalE2R(a % evalE3(t->child->neighbor), t->child->neighbor->neighbor);
 	}
-	printf("error in evalE2R: unexpected token.\n");
+
+	printf("error in evalE2R: unexpected token: %s\n", TOKEN_NAME[t->child->token.kind]);
 	return 0;
 }

@@ -116,8 +116,8 @@ ParseTree *ParseE3(TokenList **t) {
 		break;
 	case TOKEN_LPAREN:
 		AppendChild(tree, ParseTerminal(t));
-		AppendChild(tree, ParseE(t));
-		AppendChild(tree, ParseTerminal(t)); // HACK. we only checked LPAREN
+		AppendChild(tree, ParseE(t)); 
+		AppendChild(tree, ParseTerminal(t)); 
 		break;
 	default:
 		printf("error in ParseE3(): unexpected token.\n");

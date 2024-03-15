@@ -55,6 +55,12 @@ Token lexer_advance(Lexer *l) {
 
 		enum Q input = tolang(c);
 		
+		if (input == INPUT_INVALID) {
+			fprintf(stderr, "error: unexpected character '%c'\n", c);
+			t.kind = TOKEN_ERR;
+			return t;
+		}
+		
 		enum lexer_state nextstate = delta[l->state][input];
 
 		switch (nextstate) {
@@ -69,6 +75,7 @@ Token lexer_advance(Lexer *l) {
 		case (STATE_OP):
 			t.val.op = (l->state == STATE_B) ?\
 					buf[0] : c;
+			break;
 		default:
 			break;
 		}	
@@ -144,11 +151,17 @@ Token lexer_advance(Lexer *l) {
 TokenList *Scan(Lexer *l) {
 	TokenList *list = calloc(1, sizeof(TokenList));
 	TokenList *tail = list;
+
 	while (true) {
 		tail->token = lexer_advance(l);
 
-		if (tail->token.kind == TOKEN_EOF || tail->token.kind == TOKEN_ERR) 
-				break;
+		if (tail->token.kind == TOKEN_EOF) 
+			break;
+
+		if (tail->token.kind == TOKEN_ERR) {
+			tokenlist_free(list);
+			return NULL;
+		}
 
 		tail->next = calloc(1, sizeof(TokenList));
 		tail = tail->next;
