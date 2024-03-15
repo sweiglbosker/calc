@@ -32,6 +32,7 @@ typedef struct Reader {
 /* generic methods */ 
 
 Reader *new_reader(int type, void *arg);
+void reader_free(Reader *r);
 
 #define reader_peek(r) r->peek(r)
 #define reader_next(r) r->next(r)

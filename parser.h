@@ -29,6 +29,7 @@ typedef struct ParseTree {
 // production = table[nonterminal][terminal]
 
 ParseTree* NewTree(Rule r);
+void parsetree_free(ParseTree *T);
 ParseTree* ParseE(TokenList **);
 ParseTree* ParseER(TokenList **);
 ParseTree* ParseE2(TokenList **);

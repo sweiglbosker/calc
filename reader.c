@@ -15,6 +15,7 @@ static long filesize(FILE *fp) {
 
 Reader *new_reader(int type, void *arg) {
 	Reader *r = calloc(1, sizeof(Reader));
+	r->type = type;
 
 	if (type == READER_FILE) {
 		char *filename = ((char*)(*(char**)arg)); 
@@ -39,6 +40,17 @@ Reader *new_reader(int type, void *arg) {
 		r->isEOF = stdin_isEOF;
 	}
 	return r;
+}
+
+void reader_free(Reader *r) {
+	if (r->type == READER_FILE) {
+		fclose(r->data.file.fp);
+		free(r);
+		return;
+	} else {
+		free(r->data.input.line);
+		free(r);
+	}
 }
 
 char file_peek(Reader *r) {

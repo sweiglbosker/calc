@@ -10,6 +10,22 @@ ParseTree *NewTree(Rule r) {
 	return tree;
 }
 
+void parsetree_free(ParseTree *T) {
+	ParseTree *child, *neighbor;
+
+	child = T->child;
+	neighbor = T->neighbor;
+	free(T);
+
+	/* recursively frees until there is no children and no neighbors */
+	if (child) 
+		parsetree_free(child);
+	
+	if (neighbor) 
+		parsetree_free(neighbor);
+
+}
+
 static void AppendChild(ParseTree *parent, ParseTree *child) {
 	ParseTree *p = parent->child;
 
@@ -24,7 +40,6 @@ static void AppendChild(ParseTree *parent, ParseTree *child) {
 
 	p->neighbor = child;
 }
-
 
 ParseTree *ParseTerminal(TokenList **ptl) {
 	ParseTree *tree = NewTree(RULE_TERMINAL);

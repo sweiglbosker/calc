@@ -39,6 +39,10 @@ Lexer *NewLexer(Reader *r) {
 	return l;
 }
 
+void lexer_free(Lexer *l) {
+	free(l);
+}
+
 Token lexer_advance(Lexer *l) {
 	Token t = {0};
 	char buf[12] = {0};
@@ -151,6 +155,18 @@ TokenList *Scan(Lexer *l) {
 	}
 
 	return list;
+}
+
+void tokenlist_free(TokenList *head) {
+	while (true) {
+		TokenList *next = head->next;
+		free(head);
+
+		if (next == NULL) 
+			break;
+
+		head = next;
+	}
 }
 
 void PrintToken(Token *t) {
