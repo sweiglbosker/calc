@@ -79,15 +79,19 @@ long evalE2R(long a, ParseTree *t) {
 	case TOKEN_ASTERIX:
 		return evalE2R(a * b, t->child->neighbor->neighbor);
 	case TOKEN_SLASH:
-		if (b) 
+		if (b) { 
 			return evalE2R(a / b, t->child->neighbor->neighbor);
-		else
-			printf("error: division by zero\n"); return 0;
+		} else {
+			printf("error: division by zero\n");
+			return 0;
+		}
 	case TOKEN_PERCENT:
-		if (b)
+		if (b) {
 			return evalE2R(a % b, t->child->neighbor->neighbor);
-		else 
-			printf("error: division by zero\n"); return 0;
+		} else { 
+			printf("error: division by zero\n");
+			return 0;
+		}
 	}
 
 	printf("error in evalE2R: unexpected token: %s\n", TOKEN_NAME[t->child->token.kind]);
